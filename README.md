@@ -1,5 +1,7 @@
 # Secure CI/CD Pipeline with Automated Security Scans
 
+> 🐒 **Looking for a kid-friendly explanation?** Check out the [**Monkey-Friendly README**](MONKEY-README.md) for a fun, easy-to-understand version!
+
 This repository provides a comprehensive example of a secure CI/CD pipeline for a Python Flask application. It integrates various security tools into a GitHub Actions workflow to automate security testing and enforce security gates.
 
 ## Table of Contents
