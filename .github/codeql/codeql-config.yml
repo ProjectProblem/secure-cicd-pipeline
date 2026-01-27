@@ -1,0 +1,15 @@
+name: "CodeQL Security Configuration"
+
+# Specify which queries to run
+queries:
+  - uses: security-and-quality
+  - uses: security-extended
+
+# Paths to scan
+paths:
+  - app.py
+  
+# Paths to ignore
+paths-ignore:
+  - test_app.py
+  - '**/*.md'
