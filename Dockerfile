@@ -15,7 +15,7 @@ RUN adduser -D -u 1000 appuser && \
 COPY requirements.txt .
 
 # Install Python dependencies
-RUN pip install --no-cache-dir --upgrade pip && \
+RUN pip install --no-cache-dir --upgrade pip setuptools>=80.0.0 && \
     pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
