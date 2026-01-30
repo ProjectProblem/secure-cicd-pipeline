@@ -1,4 +1,4 @@
-# A Super Safe Treehouse for Our Code 🌳🐒
+# A Super Safe Treehouse for Our Code 
 
 Hello, little code monkey! Welcome to our project. This page explains everything about our safe treehouse in a fun way. If you want the grown-up version, you can read the [**Technical README**](README.md).
 
@@ -68,7 +68,7 @@ Our building machine (the CI/CD pipeline) is like an assembly line in a robot fa
 
 ## What Happens When a Robot Finds a Baddie?
 
-If one of our robot guards finds something dangerous, like a big, scary bug, they will sound the alarm! 🚨
+If one of our robot guards finds something dangerous, like a big, scary bug, they will sound the alarm! 
 
 -   **STOP!** The whole building process stops. We don't want to let any bad bugs into our treehouse.
 -   **TELL US!** The robot guard tells us exactly what it found and where.
@@ -106,4 +106,4 @@ Want to try it yourself? You'll need to have Docker on your computer.
 
 ---
 
-Thanks for visiting our safe treehouse! 🐵❤️
+Thanks for visiting our safe treehouse! 
