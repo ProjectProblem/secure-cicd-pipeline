@@ -1,6 +1,4 @@
-# Secure CI/CD Pipeline with Automated Security Scans
-
->  **Looking for a kid-friendly explanation?** Check out the [**Monkey-Friendly README**](MONKEY-README.md) for a fun, easy-to-understand version!
+# Secure CI/CD Pipeline for Python Flask Application
 
 This repository provides a comprehensive example of a secure CI/CD pipeline for a Python Flask application. It integrates various security tools into a GitHub Actions workflow to automate security testing and enforce security gates.
 
@@ -58,66 +56,42 @@ This pipeline uses a combination of security tools to provide a multi-layered de
 
 The CI/CD pipeline is defined in the `.github/workflows/security-pipeline.yml` file. It consists of the following jobs:
 
-1.  **`test`**: Runs unit tests to ensure the application's functionality is correct.
-2.  **`codeql-analysis`**: Performs static application security testing (SAST) using CodeQL to find vulnerabilities in the source code.
-3.  **`semgrep-scan`**: Runs Semgrep for additional SAST, focusing on security patterns and best practices.
-4.  **`dependency-check`**: Scans project dependencies for known vulnerabilities using OWASP Dependency-Check.
-5.  **`python-safety-check`**: Checks Python dependencies for security issues with Safety.
-6.  **`build`**: Builds the Docker image for the application.
-7.  **`trivy-scan`**: Scans the built Docker image for vulnerabilities in the OS and application dependencies.
-8.  **`security-gate`**: Acts as a gatekeeper. It checks the results of the security scans and fails the build if any high-severity vulnerabilities are found.
-9.  **`deploy-ready`**: A placeholder job that runs only if all previous jobs, including the security gate, are successful. In a real-world scenario, this job would trigger a deployment to a staging or production environment.
+1.  **Unit Tests**: Runs the application's unit tests to ensure basic functionality.
+2.  **CodeQL SAST Analysis**: Scans the source code for security vulnerabilities using CodeQL.
+3.  **Semgrep SAST Scan**: Performs a static analysis scan with Semgrep.
+4.  **OWASP Dependency Check**: Scans third-party dependencies for known vulnerabilities.
+5.  **Python Safety Check**: Checks Python dependencies for security issues.
+6.  **Build Docker Image**: Builds the Docker image for the application.
+7.  **Trivy Container Scan**: Scans the built Docker image for vulnerabilities.
+8.  **Security Gate**: A crucial job that checks the results of the previous scans. If any high or critical severity vulnerabilities are found, this job fails, which in turn fails the entire pipeline. This prevents vulnerable code from being deployed.
+9.  **Ready for Deployment**: This job only runs if all previous jobs, including the Security Gate, pass successfully. In a real-world scenario, this job would trigger a deployment to a staging or production environment.
 
 ## Vulnerability Management
 
-When a vulnerability is found, the pipeline is designed to take the following actions:
+When a vulnerability is found, the pipeline will fail at the **Security Gate**. Here's the process for handling it:
 
--   **Fail the Build**: The `security-gate` job will fail if the `dependency-check` or `trivy-scan` jobs detect high or critical severity vulnerabilities. This prevents vulnerable code from being deployed.
--   **Security Alerts**: CodeQL and Trivy are configured to upload their findings to the GitHub Security tab, providing a centralized view of all vulnerabilities.
--   **Developer Feedback**: The failed pipeline run provides immediate feedback to the developer, indicating which security check failed and why. The logs of the failed job will contain details about the vulnerabilities found.
-
-**Remediation Process**:
-
-1.  **Identify**: The developer reviews the security scan results in the GitHub Actions logs or the Security tab.
-2.  **Assess**: The developer assesses the severity and impact of the vulnerability.
-3.  **Remediate**: The developer fixes the vulnerability. This might involve updating a dependency, patching the code, or changing a configuration.
-4.  **Verify**: The developer pushes the fix to the repository, which triggers the CI/CD pipeline again. The security scans will run again to verify that the vulnerability has been remediated.
+1.  **Notification**: The developer who pushed the code will be notified that the build failed.
+2.  **Analysis**: The developer can review the logs from the failing security scan (e.g., Trivy, CodeQL) to understand the vulnerability.
+3.  **Remediation**: The developer must fix the vulnerability. This could involve:
+    *   Upgrading a dependency to a non-vulnerable version.
+    *   Applying a patch.
+    *   Rewriting the vulnerable code.
+4.  **Re-run Pipeline**: The developer pushes the fix, which automatically triggers the pipeline again.
+5.  **Verification**: If the fix is effective, the security scans will pass, the Security Gate will pass, and the pipeline will succeed.
 
 ## Getting Started
 
-To run this project locally, you need to have Docker installed.
+1.  **Fork this repository**.
+2.  **Add the Workflow File**: Manually add the `.github/workflows/security-pipeline.yml` file to your repository.
+3.  **Push a Commit**: Make a small change and push it to trigger the workflow.
+4.  **Review Results**: Check the **Actions** tab for the workflow run and the **Security** tab for the vulnerability findings.
 
-1.  **Clone the repository**:
+## References
 
-    ```bash
-    git clone https://github.com/ProjectProblem/secure-cicd-pipeline.git
-    cd secure-cicd-pipeline
-    ```
+[1] GitHub. (n.d.). *CodeQL documentation*. [https://codeql.github.com/docs/](https://codeql.github.com/docs/)
 
-2.  **Build the Docker image**:
+[2] Semgrep. (n.d.). *Semgrep documentation*. [https://semgrep.dev/docs/](https://semgrep.dev/docs/)
 
-    ```bash
-    docker build -t secure-cicd-app .
-    ```
+[3] OWASP. (n.d.). *OWASP Dependency-Check*. [https://owasp.org/www-project-dependency-check/](https://owasp.org/www-project-dependency-check/)
 
-3.  **Run the Docker container**:
-
-    ```bash
-    docker run -p 5000:5000 secure-cicd-app
-    ```
-
-4.  **Access the API**:
-
-    You can now access the API at `http://localhost:5000`.
-
----
-
-### References
-
-[1] GitHub. (n.d.). *CodeQL*. Retrieved from https://codeql.github.com/
-
-[2] Semgrep. (n.d.). *Semgrep*. Retrieved from https://semgrep.dev/
-
-[3] OWASP. (n.d.). *OWASP Dependency-Check*. Retrieved from https://owasp.org/www-project-dependency-check/
-
-[4] Aqua Security. (n.d.). *Trivy*. Retrieved from https://www.aquasec.com/products/trivy/
+[4] Aqua Security. (n.d.). *Trivy documentation*. [https://aquasecurity.github.io/trivy/](https://aquasecurity.github.io/trivy/)
